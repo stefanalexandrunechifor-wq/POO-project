@@ -130,7 +130,28 @@ FetchContent_MakeAvailable(googletest)
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
-add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES})
+add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
+        include/organ.h
+        include/pacient.h
+        include/receptor.h
+        src/organ.cpp
+        src/pacient.cpp
+        include/patogen.h
+        include/medicament.h
+        include/celula_imunitara.h
+        include/entitate_biologica.h
+        src/entitate_biologica.cpp
+        src/celula_imunitara.cpp
+        src/medicament.cpp
+        src/patogen.cpp
+        include/tipuri_patogeni.h
+        src/tipuri_patogeni.cpp
+        include/sistem_imunitar.h
+        src/sistem_imunitar.cpp
+        include/tratamente.h
+        src/tratamente.cpp
+        include/sisteme_corp.h
+        src/sisteme_corp.cpp)
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
 # NOTE: RUN_SANITIZERS is optional, if it's not present it will default to true
