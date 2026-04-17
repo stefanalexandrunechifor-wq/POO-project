@@ -3,7 +3,7 @@
 #include "patogen.h"
 #include "medicament.h"
 int Pacient::id_generator = 1;
-Pacient::Pacient() : id(id_generator++) {
+Pacient::Pacient(std::string nume) : id(id_generator++),nume(nume) {
     organe["Plamani"]   = new Organ("Plamani", 10000000, 0.02);
     organe["Sange"]     = new Organ("Sange", 15000000, 0.05);
     organe["Inima"]     = new Organ("Inima", 5000000, 0.00);
@@ -57,7 +57,10 @@ int Pacient::getBataiInima() const {
 }
 
 void Pacient::trece_o_ora() {
-    // TODO: Logica de simulare per oră
+    // TODO: actioneaza medicamentele(daor cele active,si cu efectele pozitive si cele negative)
+    // TODO: actioneaza PATOGENII(se si inmultesc cele ramase, si ataca)
+    // TODO: sistemul imunitar isi face si el treaba
+    // TODO: sa gandesti cum ar putea sa se imbine patogeni sa se creeze mutatii(mai intai vezi cateva predefinite)
 }
 
 Organ* Pacient::getOrgan(std::string nume) {
