@@ -22,4 +22,7 @@ public:
     bool verificaDacaEOcupat() const {
         return este_ocupat;
     }
+    void elibereazaReceptor() {
+        este_ocupat = false;
+    }
 };

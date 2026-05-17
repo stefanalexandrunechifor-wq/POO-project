@@ -139,8 +139,6 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         include/patogen.h
         include/medicament.h
         include/celula_imunitara.h
-        include/entitate_biologica.h
-        src/entitate_biologica.cpp
         src/celula_imunitara.cpp
         src/medicament.cpp
         src/patogen.cpp

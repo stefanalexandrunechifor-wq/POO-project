@@ -7,7 +7,12 @@ void Organ::aplicaRegenerare() {
     cSanatoase += regenerare;
 }
 void Organ::evolutieInfectie() {
-    // In fiecare ora, 10% din celulele infectate mor
+    double noi_infectari = cInfectate * 0.50;
+    if (noi_infectari > cSanatoase) {
+        noi_infectari = cSanatoase;
+    }
+    cSanatoase -= noi_infectari;
+    cInfectate += noi_infectari;
     double decese = cInfectate * 0.10;
     cInfectate -= decese;
     cMoarte += decese;
@@ -22,4 +27,13 @@ void Organ::adaugaInfectie(double cantitate) {
         cInfectate += cSanatoase;
         cSanatoase = 0;
     }
+}
+bool Organ::primesteMedicament(std::string nume_medicament) {
+    if (receptor_tratament.leagaMolecula(nume_medicament)) {
+        return true;
+    }
+    return false;
+}
+void Organ::curataReceptor() {
+    receptor_tratament.elibereazaReceptor();
 }

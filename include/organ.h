@@ -1,11 +1,13 @@
 #pragma once
 #include <string>
+#include "receptor.h"
 class Organ {
 private:
     std::string nume;
     double cSanatoase, cInfectate, cMoarte;
     double rataRegenerare;
     double totalInitial;
+    Receptor<std::string> receptor_tratament;
 public:
     Organ(std::string nume, double total, double reg);
     void aplicaRegenerare();
@@ -18,4 +20,6 @@ public:
     double getSanatoase() const { return cSanatoase; }
     double getInfectate() const { return cInfectate; }
     double getMoarte() const { return cMoarte; }
+    bool primesteMedicament(std::string nume_medicament);
+    void curataReceptor() ;
 };

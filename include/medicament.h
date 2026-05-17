@@ -14,4 +14,5 @@ public:
     void scadeTimp() { ore_active--; }
     int getOreActive() const { return ore_active; }
     virtual void administreaza(Pacient* pacient) = 0;
+    std::string getName(){return nume;}
 };

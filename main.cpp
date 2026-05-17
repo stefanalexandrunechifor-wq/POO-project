@@ -1,11 +1,24 @@
 #include <iostream>
 #include <array>
-
+#include<cstdlib>
+#include<ctime>
+#include"pacient.h"
+#include "tipuri_patogeni.h"
+using namespace std;
 int main() {
-    std::cout << "Hello, world!\n";
-    std::array<int, 100> v{};
-    int nr;
-    std::cout << "Introduceți nr: ";
+    srand(time(0));
+    Pacient pacient("Daniel");
+    Patogen* hiv = new Virus("HIV", 424566666.0, "Creier", 0.2);
+    pacient.adaugaInfectie(hiv);
+    cout<<pacient.getOxigen()<<endl;
+    cout<<pacient.getOrgan("Creier")->getIntegritate();
+    pacient.trece_o_ora();
+    cout<<pacient.getOrgan("Creier")->getIntegritate();
+    pacient.trece_o_ora();
+    pacient.trece_o_ora();
+    pacient.trece_o_ora();
+    cout<<pacient.getOxigen()<<endl;
+    cout<<pacient.getOrgan("Creier")->getIntegritate();
     /////////////////////////////////////////////////////////////////////////
     /// Observație: dacă aveți nevoie să citiți date de intrare de la tastatură,
     /// dați exemple de date de intrare folosind fișierul tastatura.txt
@@ -26,17 +39,7 @@ int main() {
     /// program care merg (și să le evitați pe cele care nu merg).
     ///
     /////////////////////////////////////////////////////////////////////////
-    std::cin >> nr;
     /////////////////////////////////////////////////////////////////////////
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "v[" << i << "] = ";
-        std::cin >> v[i];
-    }
-    std::cout << "\n\n";
-    std::cout << "Am citit de la tastatură " << nr << " elemente:\n";
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "- " << v[i] << "\n";
-    }
     ///////////////////////////////////////////////////////////////////////////
     /// Pentru date citite din fișier, NU folosiți tastatura.txt. Creați-vă voi
     /// alt fișier propriu cu ce alt nume doriți.
