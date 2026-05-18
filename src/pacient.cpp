@@ -8,7 +8,7 @@
 #include<random>
 #include <algorithm>
 int Pacient::id_generator = 1;
-Pacient::Pacient(std::string nume) : id(id_generator++),nume(nume) {
+Pacient::Pacient(const std::string& nume) : id(id_generator++), nume(nume) {
     organe["Plamani"]   = new Organ("Plamani", 100.0, 0.02);
     organe["Sange"]     = new Organ("Sange", 100.0, 0.05);
     organe["Inima"]     = new Organ("Inima", 100.0, 0.00);

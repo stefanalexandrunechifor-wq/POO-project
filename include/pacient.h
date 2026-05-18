@@ -23,7 +23,7 @@ private:
     SistemImunitar imunitate;
 
 public:
-    Pacient(std::string nume);
+    explicit Pacient(const std::string& nume);
     ~Pacient();
 
     // Semne vitale și logica
