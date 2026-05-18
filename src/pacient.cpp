@@ -85,9 +85,7 @@ void Pacient::trece_o_ora() {
         }
         bonus_imunitate = 0.15;
     }
-    std::sort(infectii_active.begin(), infectii_active.end(),
-        [](Patogen* a, Patogen* b) { return a->getPutere() > b->getPutere(); }
-    );
+    std::ranges::sort(infectii_active, [](Patogen* a, Patogen* b) { return a->getPutere() > b->getPutere(); });
     imunitate.lanseazaAtac(infectii_active, bonus_imunitate);
 
     // atac patogeni + inmultire
@@ -116,7 +114,7 @@ void Pacient::trece_o_ora() {
     }
 
     // medicamente
-    for (int i = 0; i < (int)tratamente_active.size(); i++) {
+    for (int i = 0; i < int(tratamente_active.size()); i++) {
         Medicament* med = tratamente_active[i];
         med->administreaza(this);
         med->scadeTimp();
@@ -161,7 +159,7 @@ void Pacient::trece_o_ora() {
         return nullptr;
     }
 
-void Pacient::VerificaMutatiiSimple(Patogen* /*boala*/) {
+void Pacient::VerificaMutatiiSimple(Patogen*) const {
     int randomNum = rand() % 2;
     std::string organ_a = "Inima";
     std::string organ_b = "Creier";
@@ -205,7 +203,7 @@ std::string Pacient::genereazaRaportDeces() const {
     }
     return "Cauza necunoscuta.";
 }
-void Pacient::VerificaMutatiiComplexe(Patogen* /*boala*/) {
+void Pacient::VerificaMutatiiComplexe(Patogen*) {
 
 }
 void Pacient::adaugaInfectie(Patogen* boala) {

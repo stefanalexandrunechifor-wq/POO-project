@@ -1,5 +1,5 @@
 #include"patogen.h"
-Patogen::Patogen() : putere_infectie(0.0), nume("") {}
+Patogen::Patogen() : nume(""), putere_infectie(0.0)  {}
 Patogen::Patogen(std::string nume, double putere, std::string organ)
 : nume(nume),putere_infectie(putere) {
 organe_tinta.push_back({organ, 1.0});}

@@ -20,7 +20,7 @@ public:
     [[nodiscard]] double getSanatoase() const { return cSanatoase; }
     [[nodiscard]] double getInfectate() const { return cInfectate; }
     [[nodiscard]] double getMoarte() const { return cMoarte; }
-    bool primesteMedicament(std::string nume_medicament);
+    bool primesteMedicament(const std::string& nume_medicament);
     void curataReceptor() ;
     [[nodiscard]] bool esteSubTratament() const { return receptor_tratament.verificaDacaEOcupat(); }
 };

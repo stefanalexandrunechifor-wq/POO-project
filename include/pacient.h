@@ -23,7 +23,7 @@ private:
     SistemImunitar imunitate;
 
 public:
-    explicit Pacient(const std::string& nume);
+    explicit Pacient( const std::string& nume);
     ~Pacient();
 
     // Semne vitale și logica
@@ -35,8 +35,8 @@ public:
         return infectii_active;
     }
     Organ* getOrgan(std::string nume);
-    void VerificaMutatiiSimple(Patogen* boala);
-    void VerificaMutatiiComplexe(Patogen* boala);
+    void VerificaMutatiiSimple(Patogen*) const;
+    void VerificaMutatiiComplexe(Patogen*);
     void adaugaInfectie(Patogen* boala);
     bool esteViu() const;
     std::string genereazaRaportDeces() const;

@@ -5,7 +5,7 @@
 
     SecventaADN::SecventaADN(std::string cod ) : cod_genetic(cod) {}
 
-    std::string SecventaADN::getCod() const {
+    const std::string& SecventaADN::getCod() const {
         return cod_genetic;
     }
 

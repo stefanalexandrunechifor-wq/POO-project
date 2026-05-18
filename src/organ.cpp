@@ -1,6 +1,6 @@
 #include "organ.h"
 
-Organ::Organ(std::string nume, double total, double reg) : nume(nume), cSanatoase(total), cInfectate(0), cMoarte(0), rataRegenerare(reg), totalInitial(total) {}
+Organ::Organ(std::string nume, double total, double reg) : nume(std::move(nume)), cSanatoase(total), cInfectate(0), cMoarte(0), rataRegenerare(reg), totalInitial(total) {}
 void Organ::aplicaRegenerare() {
     double regenerare = cMoarte * rataRegenerare;
     cMoarte -= regenerare;
@@ -28,7 +28,7 @@ void Organ::adaugaInfectie(double cantitate) {
         cSanatoase = 0;
     }
 }
-bool Organ::primesteMedicament(std::string nume_medicament) {
+bool Organ::primesteMedicament(const std::string& nume_medicament) {
     if (receptor_tratament.leagaMolecula(nume_medicament)) {
         return true;
     }
