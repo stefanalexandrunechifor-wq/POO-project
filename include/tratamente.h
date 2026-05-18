@@ -3,18 +3,18 @@
 class Antibiotic : public Medicament{
 private:
 public:
-    Antibiotic(std::string n, double putere, double daune, int ore);
+    Antibiotic(const std::string& n, double putere, double daune, int ore);
     void administreaza(Pacient* pacient) override;
 };
 class Antiviral : public Medicament {
 private:
 public:
-    Antiviral(std::string n, double putere, double daune, int ore);
+    Antiviral(const std::string& n, double putere, double daune, int ore);
     void administreaza(Pacient* pacient) override;
 };
 class Antipiretic : public Medicament {
 private:
 public:
-    Antipiretic(std::string n, double putere, double daune, int ore);
+    Antipiretic(const std::string& n, double putere, double daune, int ore);
     void administreaza(Pacient* pacient) override;
 };

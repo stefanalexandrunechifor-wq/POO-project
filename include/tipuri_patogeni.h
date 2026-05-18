@@ -6,7 +6,7 @@ class Virus : public Patogen {
 private:
     double rata_mutatie;
 public:
-    Virus(std::string nume, double putere, std::string organ, double mutatie);
+    Virus(const std::string& nume_virus, double putere, const std::string& organ_tinta, double mutatie);
     void ataca(Organ* victima, double multiplicator_daune) override;
     void primesteTratament(double putere_medicament) override;
     [[nodiscard]] Patogen* clone() const override;
@@ -18,7 +18,7 @@ private:
     double toxicitate;
     bool rezistenta_antibiotic;
 public:
-    Bacterie(std::string nume, double putere, std::string organ,
+    Bacterie(const std::string& nume_bacterie, double putere, const std::string& organ_tinta,
              double toxicitate, bool rezistenta_antibiotic);
     void ataca(Organ* victima, double multiplicator_daune ) override;
     void primesteTratament(double putere_medicament) override;

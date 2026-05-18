@@ -12,7 +12,7 @@ protected:
     SecventaADN adn;
 public:
     Patogen();
-    Patogen(std::string nume, double putere, std::string organ);
+    Patogen(std::string nume_patogen, double putere, std::string organ_tinta);
     Patogen(const Patogen& altul);
     Patogen& operator=(const Patogen& altul);
     virtual ~Patogen() = default;

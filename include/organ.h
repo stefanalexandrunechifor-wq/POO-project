@@ -9,14 +9,14 @@ private:
     double totalInitial;
     Receptor<std::string> receptor_tratament;
 public:
-    Organ(std::string nume, double total, double reg);
+    Organ(std::string organ_nume, double total, double reg);
     void aplicaRegenerare();
     void evolutieInfectie();
     void adaugaInfectie(double cantitate);
     [[nodiscard]] double getIntegritate() const {
         return (cSanatoase / totalInitial) * 100.0;
     }
-    [[nodiscard]] std::string getNume() const { return nume; }
+    [[nodiscard]] const std::string& getNume() const { return nume; }
     [[nodiscard]] double getSanatoase() const { return cSanatoase; }
     [[nodiscard]] double getInfectate() const { return cInfectate; }
     [[nodiscard]] double getMoarte() const { return cMoarte; }

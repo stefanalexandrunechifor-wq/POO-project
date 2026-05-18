@@ -2,12 +2,12 @@
 #include "organ.h"
 #include "tipuri_patogeni.h"
 
-Bacterie::Bacterie(std::string nume, double putere, std::string organ,
+Bacterie::Bacterie(const std::string& nume_bacterie, double putere, const std::string& organ_tinta,
                    double tox, bool rezistenta)
-    : Patogen(nume, putere, organ), toxicitate(tox), rezistenta_antibiotic(rezistenta) {}
+    : Patogen(nume_bacterie, putere, organ_tinta), toxicitate(tox), rezistenta_antibiotic(rezistenta) {}
 
-Virus::Virus(std::string nume, double putere, std::string organ, double mutatie)
-    : Patogen(nume, putere, organ), rata_mutatie(mutatie) {
+Virus::Virus(const std::string& nume_virus, double putere, const std::string& organ_tinta, double mutatie)
+    : Patogen(nume_virus, putere, organ_tinta), rata_mutatie(mutatie) {
 }
 void Virus::ataca(Organ* victima, double multiplicator_daune) {
     double daune = (putere_infectie * (1.0 + rata_mutatie)) * multiplicator_daune;

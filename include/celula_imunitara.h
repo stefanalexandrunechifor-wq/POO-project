@@ -40,7 +40,7 @@ public:
         this->putere_atac += bonus_putere;
         return *this;
     }
-    [[nodiscard]] std::string getNume() const { return nume; }
+    [[nodiscard]] const std::string& getNume() const { return nume; }
     [[nodiscard]] double getPutere() const { return putere_atac; }
 };
 

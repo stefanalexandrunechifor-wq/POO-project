@@ -13,7 +13,7 @@ SistemImunitar::~SistemImunitar() {
         delete c;
     }
 }
-void SistemImunitar::lanseazaAtac(std::vector<Patogen*>& infectii_active, double bonus_febra) {
+void SistemImunitar::lanseazaAtac(const std::vector<Patogen*>& infectii_active, double bonus_febra) {
     if (infectii_active.empty() || armata.empty()) return;
     if (bonus_febra > 1.0) {
         for (CelulaImunitara* celula : armata) {
@@ -36,10 +36,8 @@ void SistemImunitar::regenereazaArmata(double oxigen_curent) {
             std::cout << "[+] Sistemul Imunitar a primit intariri! Total celule: " << armata.size() << "\n";
         }
         if (!armata.empty()) {
-            Macrofag* mac_original = dynamic_cast<Macrofag*>(armata[0]);
-            if (mac_original != nullptr) {
-                Macrofag clona = *mac_original;
-            }
+            const Macrofag* mac_original = dynamic_cast<Macrofag*>(armata[0]);
+            (void)mac_original;
         }
     }
 }

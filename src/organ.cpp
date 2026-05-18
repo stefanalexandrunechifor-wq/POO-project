@@ -1,6 +1,6 @@
 #include "organ.h"
 
-Organ::Organ(std::string nume, double total, double reg) : nume(std::move(nume)), cSanatoase(total), cInfectate(0), cMoarte(0), rataRegenerare(reg), totalInitial(total) {}
+Organ::Organ(std::string organ_nume, double total, double reg) : nume(std::move(organ_nume)), cSanatoase(total), cInfectate(0), cMoarte(0), rataRegenerare(reg), totalInitial(total) {}
 void Organ::aplicaRegenerare() {
     double regenerare = cMoarte * rataRegenerare;
     cMoarte -= regenerare;

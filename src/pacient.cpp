@@ -8,7 +8,7 @@
 #include<random>
 #include <algorithm>
 int Pacient::id_generator = 1;
-Pacient::Pacient(const std::string& nume) : id(id_generator++), nume(nume) {
+Pacient::Pacient(const std::string& nume_pacient) : id(id_generator++), nume(nume_pacient) {
     organe["Plamani"]   = new Organ("Plamani", 100.0, 0.02);
     organe["Sange"]     = new Organ("Sange", 100.0, 0.05);
     organe["Inima"]     = new Organ("Inima", 100.0, 0.00);
@@ -21,7 +21,7 @@ Pacient::Pacient(const std::string& nume) : id(id_generator++), nume(nume) {
     organe["Piele"]     = new Organ("Piele", 100.0, 0.15);
 }
 Pacient::~Pacient() {
-    for (auto& pereche : organe) {
+    for (const auto& pereche : organe) {
         delete pereche.second;
     }
     organe.clear();
@@ -65,7 +65,7 @@ int Pacient::getBataiInima() const {
 void Pacient::trece_o_ora() {
     //febra + sistem imunitar
     double putere_totala_boli = 0;
-    for (Patogen* boala : infectii_active) {
+    for (const Patogen* boala : infectii_active) {
         putere_totala_boli += boala->getPutere();
     }
     double crestere_febra = std::min(6.0, putere_totala_boli * 0.005);
@@ -85,7 +85,7 @@ void Pacient::trece_o_ora() {
         }
         bonus_imunitate = 0.15;
     }
-    std::ranges::sort(infectii_active, [](Patogen* a, Patogen* b) { return a->getPutere() > b->getPutere(); });
+    std::ranges::sort(infectii_active, [](const Patogen* a, const Patogen* b) { return a->getPutere() > b->getPutere(); });
     imunitate.lanseazaAtac(infectii_active, bonus_imunitate);
 
     // atac patogeni + inmultire
@@ -154,8 +154,8 @@ void Pacient::trece_o_ora() {
 
     imunitate.regenereazaArmata(this->getOxigen());
 }
-    Organ* Pacient::getOrgan(std::string nume) {
-        if(organe.find(nume) != organe.end()) return organe[nume];
+    Organ* Pacient::getOrgan(const std::string& organ_nume) {
+        if (organe.find(organ_nume) != organe.end()) return organe[organ_nume];
         return nullptr;
     }
 
@@ -179,7 +179,7 @@ bool Pacient::esteViu() const {
         return false;
     }
     for (auto const& pereche : organe) {
-        Organ* org = pereche.second;
+        const Organ* org = pereche.second;
         if (org != nullptr && org->getIntegritate() <= 0.0) {
             return false;
         }
@@ -196,7 +196,7 @@ std::string Pacient::genereazaRaportDeces() const {
         return "Asfixiere severa (Hipoxie). Oxigenul a ajuns la 0%.";
     }
     for (auto const& pereche : organe) {
-        Organ* org = pereche.second;
+        const Organ* org = pereche.second;
         if (org != nullptr && org->getIntegritate() <= 0.0) {
             return "Cedare organ vital: " + org->getNume() + " distrus complet.";
         }

@@ -6,9 +6,7 @@ private:
     bool este_ocupat;
 
 public:
-    Receptor() {
-        este_ocupat = false;
-    }
+    Receptor() : molecula_prinsa(), este_ocupat(false) {}
     bool leagaMolecula(const T& moleculaNoua) {
         if (!este_ocupat) {
             molecula_prinsa = moleculaNoua;

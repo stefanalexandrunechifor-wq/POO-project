@@ -3,7 +3,7 @@
 #include "organ.h"
 #include "tipuri_patogeni.h"
 #include <iostream>
-Antibiotic::Antibiotic(std::string n, double putere, double daune, int ore)
+Antibiotic::Antibiotic(const std::string& n, double putere, double daune, int ore)
     : Medicament(n, putere, daune, ore) {}
 
 void Antibiotic::administreaza(Pacient* pacient) {
@@ -27,7 +27,7 @@ void Antibiotic::administreaza(Pacient* pacient) {
         std::cout << "[-] Eroare critica: Pacientul nu are organul 'Stomac' pentru absorbtie!\n";
     }
 }
-Antiviral::Antiviral(std::string n, double putere, double daune, int ore)
+Antiviral::Antiviral(const std::string& n, double putere, double daune, int ore)
     : Medicament(n, putere, daune, ore) {}
 
 void Antiviral::administreaza(Pacient* pacient) {
@@ -51,7 +51,7 @@ void Antiviral::administreaza(Pacient* pacient) {
         std::cout << "[-] Eroare: Pacientul nu are Ficat!\n";
     }
 }
-Antipiretic::Antipiretic(std::string n, double putere, double daune, int ore)
+Antipiretic::Antipiretic(const std::string& n, double putere, double daune, int ore)
     : Medicament(n, putere, daune, ore) {}
 
 void Antipiretic::administreaza(Pacient* pacient) {

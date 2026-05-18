@@ -4,7 +4,7 @@
 class CelulaImunitara;
 class FabricaMaduva {
 public:
-    CelulaImunitara* produceCelula(std::string tip_celula, double oxigen_pacient);
+    CelulaImunitara* produceCelula(const std::string& tip_celula, double oxigen_pacient);
 };
 class MediuCorp {
 private:
