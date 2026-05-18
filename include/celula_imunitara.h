@@ -2,17 +2,60 @@
 #include <string>
 #include <iostream>
 #include "patogen.h"
-
+#include "receptor.h"
+#include "exceptie.h"
+class Patogen;
 class CelulaImunitara {
 protected:
     std::string nume;
     double putere_atac;
+    Receptor<int> receptor_anticorpi;
 
 public:
+    CelulaImunitara() : nume("Celula Necunoscuta"), putere_atac(10.0) {}
     CelulaImunitara(std::string n, double putere) : nume(n), putere_atac(putere) {}
+    CelulaImunitara(const CelulaImunitara& alta)
+        : nume(alta.nume), putere_atac(alta.putere_atac), receptor_anticorpi(alta.receptor_anticorpi) {}
+    CelulaImunitara& operator=(const CelulaImunitara& alta) {
+        if (this != &alta) {
+            this->nume = alta.nume;
+            this->putere_atac = alta.putere_atac;
+            this->receptor_anticorpi = alta.receptor_anticorpi;
+        }
+        return *this;
+    }
     virtual ~CelulaImunitara() = default;
     virtual void ataca(Patogen* boala, double bonus_febra = 1.0) = 0;
+    void primesteStimulent(int cod_secret) {
+        if (receptor_anticorpi.leagaMolecula(cod_secret)) {
+            this->putere_atac += 25.0;
+            std::cout << "[+] Celula " << this->nume << " a absorbit stimulentul " << cod_secret << "!\n";
+        } else {
+            throw SuprasolicitareReceptorException(this->nume);
+        }
+    }
+    friend std::ostream& operator<<(std::ostream& os, const CelulaImunitara& c) {
+        os << "Tip Celula: " << c.nume << " | Putere: " << c.putere_atac;
+        return os;
+    }
+    friend std::istream& operator>>(std::istream& is, CelulaImunitara& c) {
+        std::cout << "Nume celula: ";
+        is >> c.nume;
+        std::cout << "Putere atac: ";
+        is >> c.putere_atac;
+        return is;
+    }
+    CelulaImunitara& operator+=(double bonus_putere) {
+        this->putere_atac += bonus_putere;
+        return *this;
+    }
+    std::string getNume() const { return nume; }
+    double getPutere() const { return putere_atac; }
 };
+
+inline bool operator==(const CelulaImunitara& stanga, const CelulaImunitara& dreapta) {
+    return (stanga.getNume() == dreapta.getNume() && stanga.getPutere() == dreapta.getPutere());
+}
 
 class Macrofag : public CelulaImunitara {
 public:

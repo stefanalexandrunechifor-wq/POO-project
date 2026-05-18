@@ -40,5 +40,5 @@ public:
     void adaugaInfectie(Patogen* boala);
     bool esteViu() const;
     std::string genereazaRaportDeces() const;
-
+    void adaugaTratament(Medicament* med);
 };

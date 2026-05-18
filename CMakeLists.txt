@@ -149,7 +149,9 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         include/tratamente.h
         src/tratamente.cpp
         include/sisteme_corp.h
-        src/sisteme_corp.cpp)
+        src/sisteme_corp.cpp
+        include/secventa_adn.h
+        include/exceptie.h)
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
 # NOTE: RUN_SANITIZERS is optional, if it's not present it will default to true

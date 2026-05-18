@@ -6,7 +6,6 @@ private:
     bool este_ocupat;
 
 public:
-    // Constructor
     Receptor() {
         este_ocupat = false;
     }

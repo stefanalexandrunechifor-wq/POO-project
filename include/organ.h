@@ -22,4 +22,5 @@ public:
     double getMoarte() const { return cMoarte; }
     bool primesteMedicament(std::string nume_medicament);
     void curataReceptor() ;
+    bool esteSubTratament() const { return receptor_tratament.verificaDacaEOcupat(); }
 };

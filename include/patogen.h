@@ -2,7 +2,7 @@
 #include"organ.h"
 #include<string>
 #include<vector>
-#include"sisteme_corp.h"
+#include"secventa_adn.h"
 class Patogen {
 protected:
     //std::string organ_tinta;

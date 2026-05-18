@@ -6,18 +6,19 @@
 #include<string>
 #include<iostream>
 #include<random>
+#include <algorithm>
 int Pacient::id_generator = 1;
 Pacient::Pacient(std::string nume) : id(id_generator++),nume(nume) {
-    organe["Plamani"]   = new Organ("Plamani", 10000000, 0.02);
-    organe["Sange"]     = new Organ("Sange", 15000000, 0.05);
-    organe["Inima"]     = new Organ("Inima", 5000000, 0.00);
-    organe["Ficat"]     = new Organ("Ficat", 8000000, 0.08);
-    organe["Rinichi"]   = new Organ("Rinichi", 4000000, 0.03);
-    organe["Stomac"]    = new Organ("Stomac", 3000000, 0.10);
-    organe["Creier"]    = new Organ("Creier", 12000000, 0.00);
-    organe["Maduva"]    = new Organ("Maduva", 2000000, 0.04);
-    organe["Splina"]    = new Organ("Splina", 1500000, 0.03);
-    organe["Piele"]     = new Organ("Piele", 20000000, 0.15);
+    organe["Plamani"]   = new Organ("Plamani", 100.0, 0.02);
+    organe["Sange"]     = new Organ("Sange", 100.0, 0.05);
+    organe["Inima"]     = new Organ("Inima", 100.0, 0.00);
+    organe["Ficat"]     = new Organ("Ficat", 100.0, 0.08);
+    organe["Rinichi"]   = new Organ("Rinichi", 100.0, 0.03);
+    organe["Stomac"]    = new Organ("Stomac", 100.0, 0.10);
+    organe["Creier"]    = new Organ("Creier", 100.0, 0.00);
+    organe["Maduva"]    = new Organ("Maduva", 100.0, 0.04);
+    organe["Splina"]    = new Organ("Splina", 100.0, 0.03);
+    organe["Piele"]     = new Organ("Piele", 100.0, 0.15);
 }
 Pacient::~Pacient() {
     for (auto& pereche : organe) {
@@ -45,7 +46,6 @@ double Pacient::getOxigen() const {
 }
 
 double Pacient::getTemperatura() const {
-    // TODO: Adaugi febra generata de fiecare patogen
     return mediu.getTemperatura();
 }
 int Pacient::getBataiInima() const {
@@ -63,19 +63,19 @@ int Pacient::getBataiInima() const {
     return bpm_actual;
 }
 void Pacient::trece_o_ora() {
-    //febra+sistem imunitar
+    //febra + sistem imunitar
     double putere_totala_boli = 0;
     for (Patogen* boala : infectii_active) {
         putere_totala_boli += boala->getPutere();
     }
-
-    mediu.setTemperatura(36.5 + (putere_totala_boli * 0.01));
+    double crestere_febra = std::min(6.0, putere_totala_boli * 0.005);
+    mediu.setTemperatura(36.5 + crestere_febra);
     std::cout << "[Vitals] Temperatura pacientului: " << mediu.getTemperatura() << " grade C.\n";
 
-    double bonus_imunitate = 1.0;
+    double bonus_imunitate = 0.1;
     if (mediu.getTemperatura() >= 38.0 && mediu.getTemperatura() < 40.0) {
         std::cout << "[!] Febra moderata: Sistemul imunitar este stimulat!\n";
-        bonus_imunitate = 1.5;
+        bonus_imunitate = 0.2;
     }
     else if (mediu.getTemperatura() >= 40.0) {
         std::cout << "[!!!] FEBRA CRITICA: Creierul ia daune de la caldura!\n";
@@ -83,39 +83,30 @@ void Pacient::trece_o_ora() {
         if (creier != nullptr) {
             creier->adaugaInfectie(15.0);
         }
-        bonus_imunitate = 1.2;
+        bonus_imunitate = 0.15;
     }
-
+    std::sort(infectii_active.begin(), infectii_active.end(),
+        [](Patogen* a, Patogen* b) { return a->getPutere() > b->getPutere(); }
+    );
     imunitate.lanseazaAtac(infectii_active, bonus_imunitate);
-    //atc patogeni+inmultire
-    int numar_boli_initiale = infectii_active.size();
 
+    // atac patogeni + inmultire
+    int numar_boli_initiale = infectii_active.size();
     for (int i = 0; i < numar_boli_initiale; i++) {
         Patogen* boala = infectii_active[i];
-        if (boala->getPutere() <= 0) {
-            continue;
-        }
+        if (boala->getPutere() <= 0) continue;
         std::vector<std::pair<std::string, double>> lista_tinte = boala->getOrganTinta();
-
         for (auto const& tinta : lista_tinte) {
-            std::string nume_organ = tinta.first;
-            double multiplicator = tinta.second;
-
-            Organ* organ_gasit = this->getOrgan(nume_organ);
-
+            Organ* organ_gasit = this->getOrgan(tinta.first);
             if (organ_gasit != nullptr) {
-                boala->ataca(organ_gasit, multiplicator);
+                boala->ataca(organ_gasit, tinta.second);
             } else {
-                std::cout << "[-] Boala " << boala->getNume()
-                          << " nu poate ataca " << nume_organ
-                          << " (Organul a fost complet distrus!).\n";
+                std::cout << "[-] Boala " << boala->getNume() << " a distrus deja organul " << tinta.first << ".\n";
             }
         }
-
-        if (boala->getPutere() > 20.0) {
+        // sa nu se poate multiplica la infinit, devine imposibil de oprit
+        if (boala->getPutere() > 20.0 && infectii_active.size() < 10) {
             Patogen* clona_noua = boala->clone();
-
-            // puterea scade fata de cel original (fiind ca un pui)
             double putere_taiata = clona_noua->getPutere() * 0.70;
             clona_noua->primesteTratament(putere_taiata);
 
@@ -124,7 +115,7 @@ void Pacient::trece_o_ora() {
         }
     }
 
-    // Actioneaza medicamentele (o singura data pe ora, nu per patogen)
+    // medicamente
     for (int i = 0; i < (int)tratamente_active.size(); i++) {
         Medicament* med = tratamente_active[i];
         med->administreaza(this);
@@ -136,34 +127,33 @@ void Pacient::trece_o_ora() {
             tratamente_active.erase(tratamente_active.begin() + i);
             i--;
         }
-        //actualizare a semnelor vitale
-        double oxigen_curent = this->getOxigen();
+    }
 
-        if (oxigen_curent < 80.0 && oxigen_curent >= 50.0) {
-            std::cout << "[!] AVERTISMENT: Oxigen scazut (" << oxigen_curent << "%)! Pacientul hiperventileaza!\n";
-        }
-        else if (oxigen_curent < 50.0) {
-            std::cout << "[!!!] ALERTA CRITICA: HIPOXIE (" << oxigen_curent << "%)! Organele cedeaza din lipsa de oxigen!\n";
-            for (auto const& pereche : organe) {
-                Organ* org = pereche.second;
-                if (org != nullptr && org->getNume() != "Plamani") {
-                    org->adaugaInfectie(5000.0);
-                }
+    //semne vitale noi
+    double oxigen_curent = this->getOxigen();
+
+    if (oxigen_curent < 80.0 && oxigen_curent >= 50.0) {
+        std::cout << "[!] AVERTISMENT: Oxigen scazut (" << oxigen_curent << "%)! Pacientul hiperventileaza!\n";
+    }
+    else if (oxigen_curent < 50.0) {
+        std::cout << "[!!!] ALERTA CRITICA: HIPOXIE (" << oxigen_curent << "%)! Organele cedeaza din lipsa de oxigen!\n";
+        for (auto const& pereche : organe) {
+            Organ* org = pereche.second;
+            if (org != nullptr && org->getNume() != "Plamani") {
+                org->adaugaInfectie(30.0);
             }
         }
     }
+
     for (auto const& pereche : organe) {
         Organ* org = pereche.second;
         if (org != nullptr) {
             org->evolutieInfectie();
             org->aplicaRegenerare();
+            org->curataReceptor();
         }
     }
-    for (auto const& pereche : organe) {
-        if (pereche.second != nullptr) {
-            pereche.second->curataReceptor();
-        }
-    }
+
     imunitate.regenereazaArmata(this->getOxigen());
 }
     Organ* Pacient::getOrgan(std::string nume) {
@@ -172,12 +162,11 @@ void Pacient::trece_o_ora() {
     }
 
 void Pacient::VerificaMutatiiSimple(Patogen* boala) {
-    // srand() se apeleaza o singura data in main(), nu la fiecare verificare
     int randomNum = rand() % 2;
     std::string organ_a = "Inima";
     std::string organ_b = "Creier";
     for (int i = (int)infectii_active.size() - 1; i >= 0; i--) {
-        Patogen* patogen = infectii_active[i]; // redenumit pentru a evita shadow
+        Patogen* patogen = infectii_active[i];
         if (patogen->getPutere() > 150.0) {
             patogen->setNume(patogen->getNume() + " Varianta Delta");
             std::string nou_organ = (randomNum == 0) ? organ_a : organ_b;
@@ -188,7 +177,7 @@ void Pacient::VerificaMutatiiSimple(Patogen* boala) {
     }
 }
 bool Pacient::esteViu() const {
-    if (getOxigen() <= 0.0) {
+    if (getOxigen() <= 0.0 || mediu.getTemperatura()>42.5) {
         return false;
     }
     for (auto const& pereche : organe) {
@@ -200,6 +189,11 @@ bool Pacient::esteViu() const {
     return true;
 }
 std::string Pacient::genereazaRaportDeces() const {
+    if (mediu.getTemperatura() >= 42.5) {
+        return "Soc hipertermic (Febra fatala de peste 42.5C).";
+    } else if (getOxigen() <= 0) {
+        return "Hipoxie severa (Sufocare).";
+    }
     if (getOxigen() <= 0.0) {
         return "Asfixiere severa (Hipoxie). Oxigenul a ajuns la 0%.";
     }
@@ -218,5 +212,12 @@ void Pacient::adaugaInfectie(Patogen* boala) {
     if (boala != nullptr) {
         infectii_active.push_back(boala);
         std::cout << "[!] Pacientul a fost infectat cu " << boala->getNume() << "!\n";
+    }
+}
+void Pacient::adaugaTratament(Medicament* med) {
+    if (med != nullptr) {
+        tratamente_active.push_back(med);
+        std::cout << "[Farmacie] Pacientul a luat " << med->getName()
+                  << ". Efectul va dura " << med->getOreActive() << " ore.\n";
     }
 }

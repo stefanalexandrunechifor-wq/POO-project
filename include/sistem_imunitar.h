@@ -11,4 +11,6 @@ public:
     ~SistemImunitar();
     void lanseazaAtac(std::vector<Patogen*>& infectii_active, double bonus_febra = 1.0);
     void regenereazaArmata(double oxigen_curent);
+    void stimuleazaArmata(int cod_secret);
+    void afiseazaRaportArmata() const;
 };
