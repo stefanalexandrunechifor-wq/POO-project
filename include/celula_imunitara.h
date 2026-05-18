@@ -13,19 +13,10 @@ protected:
 
 public:
     CelulaImunitara() : nume("Celula Necunoscuta"), putere_atac(10.0) {}
-    CelulaImunitara(std::string n, double putere) : nume(n), putere_atac(putere) {}
-    CelulaImunitara(const CelulaImunitara& alta)
-        : nume(alta.nume), putere_atac(alta.putere_atac), receptor_anticorpi(alta.receptor_anticorpi) {}
-    CelulaImunitara& operator=(const CelulaImunitara& alta) {
-        if (this != &alta) {
-            this->nume = alta.nume;
-            this->putere_atac = alta.putere_atac;
-            this->receptor_anticorpi = alta.receptor_anticorpi;
-        }
-        return *this;
-    }
+    CelulaImunitara(std::string n, double putere) : nume(std::move(n)), putere_atac(putere) {}    CelulaImunitara(const CelulaImunitara& alta) = default;
+    CelulaImunitara& operator=(const CelulaImunitara& alta) = default;
     virtual ~CelulaImunitara() = default;
-    virtual void ataca(Patogen* boala, double bonus_febra = 1.0) = 0;
+    virtual void ataca(Patogen* boala, double bonus_febra) = 0;
     void primesteStimulent(int cod_secret) {
         if (receptor_anticorpi.leagaMolecula(cod_secret)) {
             this->putere_atac += 25.0;
@@ -49,8 +40,8 @@ public:
         this->putere_atac += bonus_putere;
         return *this;
     }
-    std::string getNume() const { return nume; }
-    double getPutere() const { return putere_atac; }
+    [[nodiscard]] std::string getNume() const { return nume; }
+    [[nodiscard]] double getPutere() const { return putere_atac; }
 };
 
 inline bool operator==(const CelulaImunitara& stanga, const CelulaImunitara& dreapta) {
@@ -61,7 +52,7 @@ class Macrofag : public CelulaImunitara {
 public:
     Macrofag() : CelulaImunitara("Macrofag", 15.0) {}
 
-    void ataca(Patogen* boala, double bonus_febra = 1.0) override {
+    void ataca(Patogen* boala, double bonus_febra) override {
         double daune_finale = putere_atac * bonus_febra;
         boala->primesteTratament(daune_finale);
     }
@@ -71,7 +62,7 @@ class Celula_T : public CelulaImunitara {
 public:
     Celula_T() : CelulaImunitara("Celula T", 25.0) {}
 
-    void ataca(Patogen* boala, double bonus_febra = 1.0) override {
+    void ataca(Patogen* boala, double bonus_febra ) override {
         if (boala->getTip() == "Virus") {
             std::cout << "[Imunitate] Celula T loveste critic un virus!\n";
             boala->primesteTratament(putere_atac * 2.0 * bonus_febra);
@@ -85,7 +76,7 @@ class Celula_B : public CelulaImunitara {
 public:
     Celula_B() : CelulaImunitara("Celula B", 20.0) {}
 
-    void ataca(Patogen* boala, double bonus_febra = 1.0) override {
+    void ataca(Patogen* boala, double bonus_febra) override {
         if (boala->getTip() == "Bacterie") {
             std::cout << "[Imunitate] Celula B inunda bacteria cu anticorpi!\n";
             boala->primesteTratament(putere_atac * 2.0 * bonus_febra);

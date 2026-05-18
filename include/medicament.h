@@ -12,7 +12,7 @@ public:
     Medicament(std::string nume, double putere,double daune, int ore);
     virtual ~Medicament() = default;
     void scadeTimp() { ore_active--; }
-    int getOreActive() const { return ore_active; }
+    [[nodiscard]] int getOreActive() const { return ore_active; }
     virtual void administreaza(Pacient* pacient) = 0;
     std::string getName(){return nume;}
 };

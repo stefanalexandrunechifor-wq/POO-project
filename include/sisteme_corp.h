@@ -13,8 +13,8 @@ private:
 
 public:
     MediuCorp() : temperatura(36.5), nivel_toxicitate(0.0) {}
-    double getTemperatura() const { return temperatura; }
-    double getToxicitate() const { return nivel_toxicitate; }
+    [[nodiscard]] double getTemperatura() const { return temperatura; }
+    [[nodiscard]] double getToxicitate() const { return nivel_toxicitate; }
     void cresteFebra(double valoare) {
         temperatura += valoare;
         if (temperatura > 42.0) temperatura = 42.0;

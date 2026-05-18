@@ -18,7 +18,7 @@ public:
         return false;
     }
 
-    bool verificaDacaEOcupat() const {
+    [[nodiscard]] bool verificaDacaEOcupat() const {
         return este_ocupat;
     }
     void elibereazaReceptor() {

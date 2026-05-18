@@ -13,14 +13,14 @@ public:
     void aplicaRegenerare();
     void evolutieInfectie();
     void adaugaInfectie(double cantitate);
-    double getIntegritate() const {
+    [[nodiscard]] double getIntegritate() const {
         return (cSanatoase / totalInitial) * 100.0;
     }
-    std::string getNume() const { return nume; }
-    double getSanatoase() const { return cSanatoase; }
-    double getInfectate() const { return cInfectate; }
-    double getMoarte() const { return cMoarte; }
+    [[nodiscard]] std::string getNume() const { return nume; }
+    [[nodiscard]] double getSanatoase() const { return cSanatoase; }
+    [[nodiscard]] double getInfectate() const { return cInfectate; }
+    [[nodiscard]] double getMoarte() const { return cMoarte; }
     bool primesteMedicament(std::string nume_medicament);
     void curataReceptor() ;
-    bool esteSubTratament() const { return receptor_tratament.verificaDacaEOcupat(); }
+    [[nodiscard]] bool esteSubTratament() const { return receptor_tratament.verificaDacaEOcupat(); }
 };
