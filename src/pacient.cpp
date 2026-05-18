@@ -161,7 +161,7 @@ void Pacient::trece_o_ora() {
         return nullptr;
     }
 
-void Pacient::VerificaMutatiiSimple(Patogen* boala) {
+void Pacient::VerificaMutatiiSimple(Patogen* /*boala*/) {
     int randomNum = rand() % 2;
     std::string organ_a = "Inima";
     std::string organ_b = "Creier";
@@ -205,7 +205,7 @@ std::string Pacient::genereazaRaportDeces() const {
     }
     return "Cauza necunoscuta.";
 }
-void Pacient::VerificaMutatiiComplexe(Patogen* boala) {
+void Pacient::VerificaMutatiiComplexe(Patogen* /*boala*/) {
 
 }
 void Pacient::adaugaInfectie(Patogen* boala) {
