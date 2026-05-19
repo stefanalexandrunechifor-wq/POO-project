@@ -26,7 +26,6 @@ public:
     void adaugaToxicitate(double valoare) {
         nivel_toxicitate += valoare;
     }
-    void setTemperatura(double t) { temperatura = t; }
 };
 class CentruDeComanda {
 private:
