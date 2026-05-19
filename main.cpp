@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <ctime>
 #include "pacient.h"
 #include "sisteme_corp.h"
 #include "tratamente.h"
@@ -56,6 +57,8 @@ int main() {
         std::cout << "[VITALE] Oxigen: " << pacient.getOxigen()
                   << "% | Temp: " << pacient.getTemperatura()
                   << "C | Puls: " << pacient.getBataiInima() << " BPM\n";
+        std::cout << "[Farmacie] Medicamente active: "
+                  << Medicament::getNumarMedicamenteActive() << "\n";
 
         afiseazaMeniuPrincipal();
 
@@ -66,6 +69,7 @@ int main() {
             case 1:
                 std::cout << "\n--- Timpul trece... ---\n";
                 pacient.trece_o_ora();
+                pacient.afiseazaStareOrgane();
                 ora++;
                 break;
 
@@ -114,6 +118,8 @@ int main() {
                 std::cout << "\n[Test Exceptii] Introduceti codul de stimulare (911): ";
                 int cod;
                 std::cin >> cod;
+                pacient.stimuleazaSistemImunitar(cod);
+                pacient.afiseazaRaportSistemImunitar();
                 break;
             }
 

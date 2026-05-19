@@ -41,4 +41,7 @@ public:
     bool esteViu() const;
     std::string genereazaRaportDeces() const;
     void adaugaTratament(Medicament* med);
+    void stimuleazaSistemImunitar(int cod_secret);
+    void afiseazaRaportSistemImunitar() const;
+    void afiseazaStareOrgane() const;
 };

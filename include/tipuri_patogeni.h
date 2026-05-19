@@ -7,6 +7,8 @@ private:
     double rata_mutatie;
 public:
     Virus(const std::string& nume_virus, double putere, const std::string& organ_tinta, double mutatie);
+    Virus(const Virus&) = default;
+    Virus& operator=(const Virus&) = default;
     void ataca(Organ* victima, double multiplicator_daune) override;
     void primesteTratament(double putere_medicament) override;
     [[nodiscard]] Patogen* clone() const override;
@@ -20,8 +22,11 @@ private:
 public:
     Bacterie(const std::string& nume_bacterie, double putere, const std::string& organ_tinta,
              double toxicitate, bool rezistenta_antibiotic);
+    Bacterie(const Bacterie&) = default;
+    Bacterie& operator=(const Bacterie&) = default;
     void ataca(Organ* victima, double multiplicator_daune ) override;
     void primesteTratament(double putere_medicament) override;
     [[nodiscard]] Patogen* clone() const override;
     [[nodiscard]] std::string getTip() const override { return "Bacterie"; }
 };
+

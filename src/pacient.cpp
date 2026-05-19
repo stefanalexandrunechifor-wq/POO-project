@@ -7,6 +7,7 @@
 #include<iostream>
 #include<random>
 #include <algorithm>
+#include <cstdlib>
 int Pacient::id_generator = 1;
 Pacient::Pacient(const std::string& nume_pacient) : id(id_generator++), nume(nume_pacient) {
     organe["Plamani"]   = new Organ("Plamani", 100.0, 0.02);
@@ -69,8 +70,15 @@ void Pacient::trece_o_ora() {
         putere_totala_boli += boala->getPutere();
     }
     double crestere_febra = std::min(6.0, putere_totala_boli * 0.005);
-    mediu.setTemperatura(36.5 + crestere_febra);
-    std::cout << "[Vitals] Temperatura pacientului: " << mediu.getTemperatura() << " grade C.\n";
+    const double temperatura_tinta = 36.5 + crestere_febra;
+    if (temperatura_tinta > mediu.getTemperatura()) {
+        mediu.cresteFebra(temperatura_tinta - mediu.getTemperatura());
+    } else {
+        mediu.scadeFebra(mediu.getTemperatura() - temperatura_tinta);
+    }
+    mediu.adaugaToxicitate(putere_totala_boli * 0.0015);
+    std::cout << "[Vitals] Temperatura pacientului: " << mediu.getTemperatura()
+              << " grade C | Toxicitate: " << mediu.getToxicitate() << "\n";
 
     double bonus_imunitate = 0.1;
     if (mediu.getTemperatura() >= 38.0 && mediu.getTemperatura() < 40.0) {
@@ -93,6 +101,8 @@ void Pacient::trece_o_ora() {
     for (int i = 0; i < numar_boli_initiale; i++) {
         Patogen* boala = infectii_active[i];
         if (boala->getPutere() <= 0) continue;
+        VerificaMutatiiSimple(boala);
+        VerificaMutatiiComplexe(boala);
         std::vector<std::pair<std::string, double>> lista_tinte = boala->getOrganTinta();
         for (auto const& tinta : lista_tinte) {
             Organ* organ_gasit = this->getOrgan(tinta.first);
@@ -159,20 +169,30 @@ void Pacient::trece_o_ora() {
         return nullptr;
     }
 
-void Pacient::VerificaMutatiiSimple(Patogen*) const {
-    int randomNum = rand() % 2;
-    std::string organ_a = "Inima";
-    std::string organ_b = "Creier";
-    for (int i = (int)infectii_active.size() - 1; i >= 0; i--) {
-        Patogen* patogen = infectii_active[i];
-        if (patogen->getPutere() > 150.0) {
-            patogen->setNume(patogen->getNume() + " Varianta Delta");
-            std::string nou_organ = (randomNum == 0) ? organ_a : organ_b;
-            patogen->adaugaOrganTinta(nou_organ, 1.5);
-            std::cout << "[Mutatie] " << patogen->getNume()
-                      << " ataca acum si " << nou_organ << "!\n";
-        }
+void Pacient::VerificaMutatiiSimple(Patogen* patogen) const {
+    if (patogen == nullptr || patogen->getPutere() <= 150.0) {
+        return;
     }
+
+    const std::string adn_vechi = patogen->getADN();
+    patogen->aplicaMutatieADN();
+    std::string adn_nou = patogen->getADN();
+
+    if (adn_nou == adn_vechi && !adn_nou.empty()) {
+        adn_nou[0] = (adn_nou[0] == 'A') ? 'C' : 'A';
+        patogen->setADN(adn_nou);
+        adn_nou = patogen->getADN();
+    }
+
+    if (patogen->getNume().find("Varianta Delta") == std::string::npos) {
+        patogen->setNume(patogen->getNume() + " Varianta Delta");
+    }
+    const std::string nou_organ = (std::rand() % 2 == 0) ? "Inima" : "Creier";
+    patogen->adaugaOrganTinta(nou_organ, 1.5);
+
+    std::cout << "[Mutatie simpla] " << patogen->getNume()
+              << " si-a modificat ADN-ul (" << adn_vechi << " -> " << adn_nou
+              << ") si ataca acum si " << nou_organ << "!\n";
 }
 bool Pacient::esteViu() const {
     if (getOxigen() <= 0.0 || mediu.getTemperatura()>42.5) {
@@ -203,8 +223,25 @@ std::string Pacient::genereazaRaportDeces() const {
     }
     return "Cauza necunoscuta.";
 }
-void Pacient::VerificaMutatiiComplexe(Patogen*) {
+void Pacient::VerificaMutatiiComplexe(Patogen* patogen) {
+    if (patogen == nullptr || patogen->getPutere() < 220.0) {
+        return;
+    }
 
+    const std::string adn_vechi = patogen->getADN();
+    patogen->aplicaMutatieADN();
+    patogen->aplicaMutatieADN();
+    const std::string adn_nou = patogen->getADN();
+
+    if (patogen->getNume().find("Omega") == std::string::npos) {
+        patogen->setNume(patogen->getNume() + " Omega");
+    }
+    patogen->adaugaOrganTinta("Rinichi", 1.3);
+    patogen->adaugaOrganTinta("Ficat", 1.2);
+
+    std::cout << "[Mutatie complexa] " << patogen->getNume()
+              << " a evoluat agresiv. ADN: " << adn_vechi
+              << " -> " << adn_nou << ". Tintele au fost extinse.\n";
 }
 void Pacient::adaugaInfectie(Patogen* boala) {
     if (boala != nullptr) {
@@ -217,5 +254,24 @@ void Pacient::adaugaTratament(Medicament* med) {
         tratamente_active.push_back(med);
         std::cout << "[Farmacie] Pacientul a luat " << med->getName()
                   << ". Efectul va dura " << med->getOreActive() << " ore.\n";
+    }
+}
+void Pacient::stimuleazaSistemImunitar(int cod_secret) {
+    imunitate.stimuleazaArmata(cod_secret);
+}
+void Pacient::afiseazaRaportSistemImunitar() const {
+    imunitate.afiseazaRaportArmata();
+}
+void Pacient::afiseazaStareOrgane() const {
+    std::cout << "\n--- Status organe ---\n";
+    for (const auto& pereche : organe) {
+        const Organ* organ = pereche.second;
+        if (organ == nullptr) {
+            continue;
+        }
+        std::cout << organ->getNume()
+                  << " | Sanatoase: " << organ->getSanatoase()
+                  << " | Infectate: " << organ->getInfectate()
+                  << " | Moarte: " << organ->getMoarte() << "\n";
     }
 }
