@@ -110,7 +110,20 @@ int main() {
             case 4: {
                 bool ficat_blocat = (pacient.getOrgan("Ficat") != nullptr) && pacient.getOrgan("Ficat")->esteSubTratament();
                 bool stomac_blocat = (pacient.getOrgan("Stomac") != nullptr) && pacient.getOrgan("Stomac")->esteSubTratament();
-                comandament.cereAnalizaLLM(pacient.getOxigen(), pacient.getTemperatura(), ficat_blocat, stomac_blocat);
+                comandament.cereAnalizaLLM(
+                    pacient.getOxigen(),
+                    pacient.getTemperatura(),
+                    pacient.getBataiInima(),
+                    pacient.getToxicitate(),
+                    pacient.getIntegritateOrgan("Plamani"),
+                    pacient.getIntegritateOrgan("Inima"),
+                    pacient.getIntegritateOrgan("Creier"),
+                    pacient.getIntegritateOrgan("Rinichi"),
+                    pacient.getIntegritateOrgan("Ficat"),
+                    pacient.getIntegritateOrgan("Maduva"),
+                    ficat_blocat,
+                    stomac_blocat
+                );
                 break;
             }
 

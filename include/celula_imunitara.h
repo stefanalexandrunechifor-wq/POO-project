@@ -65,6 +65,9 @@ public:
     void ataca(Patogen* boala, double bonus_febra ) override {
         if (boala->getTip() == "Virus") {
             std::cout << "[Imunitate] Celula T loveste critic un virus!\n";
+            if (boala->getNume() == "HIV")
+                boala->primesteTratament((putere_atac * 1.0 * bonus_febra));
+            else
             boala->primesteTratament(putere_atac * 2.0 * bonus_febra);
         } else {
             boala->primesteTratament(putere_atac * 0.2 * bonus_febra);

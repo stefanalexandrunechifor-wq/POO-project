@@ -6,11 +6,14 @@ class SistemImunitar {
 private:
     std::vector<CelulaImunitara*> armata;
     FabricaMaduva fabrica;
+    double oboseala_imuna;
+    int ore_lupta_consecutiva;
 public:
     SistemImunitar();
     ~SistemImunitar();
     void lanseazaAtac(const std::vector<Patogen*>& infectii_active, double bonus_febra = 1.0);
     void regenereazaArmata(double oxigen_curent);
+    void aplicaImunosupresie(double intensitate);
     void stimuleazaArmata(int cod_secret);
     void afiseazaRaportArmata() const;
 };

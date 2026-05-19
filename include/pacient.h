@@ -21,6 +21,9 @@ private:
     std::unordered_set<std::string> anticorpi;
     std::vector<std::string> carnet_vaccinari;
     SistemImunitar imunitate;
+    double rezervor_hiv_global;
+    int ore_fara_antivirale;
+    [[nodiscard]] bool existaAntiviralActiv() const;
 
 public:
     explicit Pacient(const std::string& nume_pacient);
@@ -29,6 +32,8 @@ public:
     // Semne vitale și logica
     double getOxigen() const;
     double getTemperatura() const;
+    double getToxicitate() const;
+    double getIntegritateOrgan(const std::string& organ_nume) const;
     int getBataiInima() const;
     void trece_o_ora();
     const std::vector<Patogen*>& getInfectii() const {
