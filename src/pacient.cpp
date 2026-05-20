@@ -156,7 +156,7 @@ void Pacient::trece_o_ora() {
     imunitate.lanseazaAtac(infectii_active, bonus_imunitate);
 
     // atac patogeni + inmultire
-    const auto esteSubTratamentSpecific = [&](Patogen* boala) {
+    const auto esteSubTratamentSpecific = [&](const Patogen* boala) {
         if (boala == nullptr) {
             return false;
         }
@@ -243,7 +243,7 @@ void Pacient::trece_o_ora() {
             org->curataReceptor();
         }
     }
-    Organ* maduva = getOrgan("Maduva");
+    const Organ* maduva = getOrgan("Maduva");
     const double integritate_maduva = (maduva != nullptr) ? maduva->getIntegritate() : 100.0;
     const double penalizare_hiv = std::clamp(rezervor_hiv_global / 300.0, 0.0, 0.45);
     const double oxigen_eficient = getOxigen() * (integritate_maduva / 100.0) * (1.0 - penalizare_hiv);
