@@ -152,6 +152,10 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         src/sisteme_corp.cpp
         include/secventa_adn.h
         include/exceptie.h
+        include/meniu.h
+        src/meniu.cpp
+        include/simulator.h
+        src/simulator.cpp
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
